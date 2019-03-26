@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1></h1>
+<a class="btn btn-outline-secondary btn-sm btn-block" href="/add_news" role="button">Добавить новость</a>
+<h2></h2>
+{% for item in news %}
+<div class="navbar-nav bg-dark" role="alert">
+    <nav class="navbar navbar-light bg-dark" style="background-color: #e3f2fd;">
+        <a class="btn btn-dark"  href="/big_news/{{item[0]}}">{{item[1]}}</a>
+        <a class="btn btn-dark"  href="/big_news/{{item[0]}}">{{item[2]}}</a>
+        <a class="btn btn-dark"  href="/delete_news/{{item[0]}}">Удалить новость</a>
+    </nav>
+</div>
+{% endfor %}
+{% endblock %}

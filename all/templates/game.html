@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if "user_game" in session %}
+<a class="btn btn-lg btn-outline-secondary btn-big btn-block" href="#" role="button">{{session['user_game']}}</a>
+{% endif %}
+{% endblock %}
