@@ -71,16 +71,17 @@ class UserModel:
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                              user_name VARCHAR(50),
                              password_hash VARCHAR(128),
-                             user_game INT(10)
+                             user_game INT(10),
+                             user_factor INT(10)
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, user_name, password_hash):
+    def insert(self, user_name, password_hash, user_game, user_factor):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO users 
-                          (user_name, password_hash) 
-                          VALUES (?,?)''', (user_name, password_hash))
+                          (user_name, password_hash, user_game, user_factor) 
+                          VALUES (?,?,?,?)''', (user_name, password_hash, user_game, user_factor))
         cursor.close()
         self.connection.commit()
 

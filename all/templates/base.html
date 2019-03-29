@@ -14,11 +14,29 @@
 </head>
 <body>
 <header>
-    <div class="navbar-nav">
+    <div class="navbar-nav justify-content-end">
         <nav class="navbar navbar-dark bg-dark">
             {% if "username" in session %}
-            <a class="navbar-brand" href="/table">{{session['username']}}</a>
-            <a class="btn btn-secondary" href="/logout" role="button">Выйти</a>
+            <a class="btn btn-lg btn-dark" href="#">
+                <img src="/static/img/dr_2.jpg" width="32" height="32"
+                     class="d-inline-block align-top" alt="">
+                {{session['username']}}
+            </a>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="btn btn-lg btn-dark" href="/game">Игра</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-lg btn-dark" href="/news">Новости</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-lg btn-dark" href="/custom">Кастомизация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-lg btn-dark" href="/logout" role="button">Выйти</a>
+                </li>
+            </ul>
+
             {% endif %}
             {% if "username" not in session %}
             <a class="navbar-brand" href="/logout">Регистрация</a>
