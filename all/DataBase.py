@@ -39,7 +39,7 @@ class NewsModel:
 
     def get(self, news_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM news WHERE id = {}".format(str(news_id),)) #!!!!!!
+        cursor.execute("SELECT * FROM news WHERE id = {}".format(str(news_id), ))  # !!!!!!
         row = cursor.fetchone()
         return row
 
@@ -71,17 +71,17 @@ class UserModel:
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                              user_name VARCHAR(50),
                              password_hash VARCHAR(128),
-                             user_game INT(10),
-                             user_factor INT(10)
+                             user_game INT(10) default 0,
+                             user_factor INT(10) default 1
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, user_name, password_hash, user_game, user_factor):
+    def insert(self, user_name, password_hash):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO users 
-                          (user_name, password_hash, user_game, user_factor) 
-                          VALUES (?,?,?,?)''', (user_name, password_hash, user_game, user_factor))
+                          (user_name, password_hash) 
+                          VALUES (?,?)''', (user_name, password_hash))
         cursor.close()
         self.connection.commit()
 
@@ -90,6 +90,11 @@ class UserModel:
         cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id),))
         row = cursor.fetchone()
         return row
+
+    def add_game(self, user_id):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "UPDATE users SET user_game=user_game+user_factor WHERE id = {}".format(user_id))
 
     def get_all(self):
         cursor = self.connection.cursor()

@@ -30,8 +30,6 @@ def login():
     form = LoginForm()
     user_name = form.username.data
     password = form.password.data
-    user_game = 0
-    user_factor = 1
     user_model = UserModel(db.get_connection())
     exists = user_model.exists(user_name, password)
     if exists[0]:
@@ -41,7 +39,7 @@ def login():
         session['user_factor'] = 1
         return redirect("/game")
     else:
-        user_model.insert(user_name, password, user_game, user_factor)
+        user_model.insert(user_name, password)
         return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -96,7 +94,8 @@ def game():
 def game_plus():
     if 'username' not in session:
         return redirect('/login')
-    session['user_game'] += session['user_factor']
+    user_model = UserModel(db.get_connection())
+    user_model.add_game(session["user_id"])
     return redirect('/game')
 
 
