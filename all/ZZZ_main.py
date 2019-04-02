@@ -35,8 +35,9 @@ def login():
     if exists[0]:
         session['username'] = user_name
         session['user_id'] = exists[1]
-        session['user_game'] = 0
-        session['user_factor'] = 1
+        session['user_game'] = exists[2]
+        session['user_factor'] = exists[3]
+        print(user_model.get_all())
         return redirect("/game")
     else:
         user_model.insert(user_name, password)
@@ -56,6 +57,17 @@ def add_news():
         return redirect("/news")
     return render_template('add_news.html', title='Добавление новости',
                            form=form, username=session['username'])
+
+
+@app.route('/share_news', methods=['GET', 'POST'])
+def share_news():
+    if 'username' not in session:
+        return redirect('/login')
+    title = session['username']
+    content = 'Я набрал {} очков в ВК Кликере!'.format(session['user_game'])
+    nm = NewsModel(db.get_connection())
+    nm.insert(title, str(content), session['user_id'])
+    return redirect("/news")
 
 
 @app.route('/delete_news/<int:news_id>', methods=['GET'])
@@ -87,6 +99,8 @@ def table():
 def game():
     if 'username' not in session:
         return redirect('/login')
+    user_model = UserModel(db.get_connection())
+    #print(user_model.get_all())
     return render_template('game.html')
 
 
@@ -96,6 +110,8 @@ def game_plus():
         return redirect('/login')
     user_model = UserModel(db.get_connection())
     user_model.add_game(session["user_id"])
+    #print(user_model.get_all())
+    session['user_game'] += session['user_factor']
     return redirect('/game')
 
 
@@ -103,16 +119,44 @@ def game_plus():
 def game_factor():
     if 'username' not in session:
         return redirect('/login')
-    session['user_factor'] += 0.5
+    user_model = UserModel(db.get_connection())
+    user_model.add_factor(session["user_id"])
+    session['user_factor'] += 1
     session['user_game'] -= 100
     return redirect('/game')
 
 
-@app.route('/custom')
-def custom():
+@app.route('/game_factor_2')
+def game_factor_2():
     if 'username' not in session:
         return redirect('/login')
-    return render_template('custom.html')
+    user_model = UserModel(db.get_connection())
+    user_model.add_factor_2(session["user_id"])
+    session['user_factor'] += 2
+    session['user_game'] -= 200
+    return redirect('/game')
+
+
+@app.route('/game_factor_3')
+def game_factor_3():
+    if 'username' not in session:
+        return redirect('/login')
+    user_model = UserModel(db.get_connection())
+    user_model.add_factor_3(session["user_id"])
+    session['user_factor'] += 3
+    session['user_game'] -= 300
+    return redirect('/game')
+
+
+@app.route('/game_factor_4')
+def game_factor_4():
+    if 'username' not in session:
+        return redirect('/login')
+    user_model = UserModel(db.get_connection())
+    user_model.add_factor_4(session["user_id"])
+    session['user_factor'] += 4
+    session['user_game'] -= 400
+    return redirect('/game')
 
 
 @app.route('/news', methods=['GET'])
